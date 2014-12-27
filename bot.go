@@ -3,6 +3,7 @@ package main
 import (
 	"bytes"
 	"errors"
+	"fmt"
 	"github.com/PuerkitoBio/goquery"
 	"io"
 	"math/rand"
@@ -186,6 +187,11 @@ func (b *Bot) enterGiveaways(title string, c chan *Entry) func(int, *goquery.Sel
 		url, exists := sel.Attr("href")
 		if !exists || url == "" {
 			err_check(errors.New("no url"), "")
+			return
+		}
+
+		if sel.Text() != title {
+			err_check(errors.New(fmt.Sprintf("bad title %s", sel.Text())), url)
 			return
 		}
 
